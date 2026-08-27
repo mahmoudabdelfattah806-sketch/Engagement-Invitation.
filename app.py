@@ -7,7 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. التصميم الفاخر (الخلفية الداكنة، الستائر البطئية، أنيميشن الخاتم)
+# 2. التصميم الفاخر (الخلفية الداكنة، الستائر البيضاء الناصعة لمدة 6 ثوانٍ، وأنيميشن الخاتم)
 st.markdown("""
     <style>
     /* خلفية داكنة ملكية (Dark Luxury Theme) */
@@ -17,7 +17,7 @@ st.markdown("""
         font-family: 'Georgia', serif;
     }
 
-    /* أنيميشن الستائر البيضاء - بطيئة وانسيابية (4 ثوانٍ) */
+    /* أنيميشن الستائر البيضاء الناصعة تماماً - (6 ثوانٍ) */
     @keyframes curtainOpenLeft {
         0% { transform: translateX(0); }
         100% { transform: translateX(-100%); visibility: hidden; }
@@ -32,18 +32,18 @@ st.markdown("""
         top: 0;
         width: 50%;
         height: 100%;
-        background: linear-gradient(90deg, #ffffff 0%, #eaeaea 80%, #dcdcdx 100%);
+        background: #ffffff;
         z-index: 9999;
         box-shadow: 10px 0 30px rgba(0,0,0,0.5);
         pointer-events: none;
     }
     .curtain-left {
         left: 0;
-        animation: curtainOpenLeft 4s ease-in-out 0.8s forwards;
+        animation: curtainOpenLeft 6s ease-in-out 0.8s forwards;
     }
     .curtain-right {
         right: 0;
-        animation: curtainOpenRight 4s ease-in-out 0.8s forwards;
+        animation: curtainOpenRight 6s ease-in-out 0.8s forwards;
     }
 
     /* العناوين المذهبة */
@@ -122,7 +122,7 @@ st.markdown("""
     }
     </style>
 
-    <!-- الستائر المتنقلة -->
+    <!-- الستائر البيضاء الناصعة -->
     <div class="curtain-left"></div>
     <div class="curtain-right"></div>
 """, unsafe_allow_html=True)
