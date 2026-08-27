@@ -1,5 +1,4 @@
 import streamlit as st
-import base64
 
 # 1. إعدادات الصفحة
 st.set_page_config(
@@ -8,38 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# -------------------------------------------------------------
-# 🎵 تشغيل الأغنية تلقائياً من ملف music.mp3
-# -------------------------------------------------------------
-def play_background_music(file_path):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            return f"""
-                <audio autoplay loop style="display:none;">
-                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                </audio>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {{
-                        var audio = document.querySelector("audio");
-                        if (audio) {{
-                            audio.play().catch(function(e) {{
-                                console.log("Autoplay waiting for click");
-                            }});
-                        }}
-                    }});
-                </script>
-            """
-    except Exception:
-        return ""
-
-music_html = play_background_music("music.mp3")
-if music_html:
-    st.components.v1.html(music_html, height=0)
-# -------------------------------------------------------------
-
-# 2. التنسيق والتصميم الفرحي الفاخر (Wedding Theme)
+# 2. التنسيق والتصميم الفرحي الفاخر
 st.markdown("""
     <style>
     .main {
@@ -76,6 +44,17 @@ st.balloons()
 st.markdown("<h1 style='text-align: center;'>👑 YOU'RE INVITED 👑</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: #AA7C11;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; font-size: 48px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
+
+st.write("---")
+
+# 🎵 مشغل الموسيقى المضمون
+st.markdown("<h4 style='text-align: center; color: #D4AF37;'>🎵 Play Background Music 🎵</h4>", unsafe_allow_html=True)
+try:
+    audio_file = open('music.mp3', 'rb')
+    audio_bytes = audio_file.read()
+    st.audio(audio_bytes, format='audio/mp3')
+except Exception:
+    st.info("📌 Music file 'music.mp3' not found.")
 
 st.write("---")
 
