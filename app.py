@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 
 # 1. إعدادات الصفحة
 st.set_page_config(
@@ -6,6 +7,52 @@ st.set_page_config(
     page_icon="💍",
     layout="centered"
 )
+
+# -------------------------------------------------------------
+# 🎵 تشغيل الموسيقى عند أول لمسة أو حركة في الصفحة (Smart Autoplay)
+# -------------------------------------------------------------
+def get_audio_html(file_path):
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+            return f"""
+                <audio id="bg-music" loop style="display:none;">
+                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                </audio>
+                <script>
+                    function playAudio() {{
+                        var audio = document.getElementById("bg-music");
+                        if (audio) {{
+                            audio.play().then(function() {{
+                                // تم التشغيل بنجاح، إزالة المستمعين
+                                removeListeners();
+                            }}).catch(function(e) {{
+                                console.log("Waiting for user interaction");
+                            }});
+                        }}
+                    }}
+
+                    function removeListeners() {{
+                        document.removeEventListener("click", playAudio);
+                        document.removeEventListener("touchstart", playAudio);
+                        document.removeEventListener("scroll", playAudio);
+                    }}
+
+                    // تشغيل الصوت فوراً أو عند أول حركة/لمسة للضيف
+                    document.addEventListener("DOMContentLoaded", playAudio);
+                    document.addEventListener("click", playAudio);
+                    document.addEventListener("touchstart", playAudio);
+                    document.addEventListener("scroll", playAudio);
+                </script>
+            """
+    except Exception:
+        return ""
+
+music_html = get_audio_html("music.mp3")
+if music_html:
+    st.components.v1.html(music_html, height=0)
+# -------------------------------------------------------------
 
 # 2. التنسيق والتصميم الفرحي الفاخر
 st.markdown("""
@@ -44,17 +91,6 @@ st.balloons()
 st.markdown("<h1 style='text-align: center;'>👑 YOU'RE INVITED 👑</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: #AA7C11;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; font-size: 48px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
-
-st.write("---")
-
-# 🎵 مشغل الموسيقى المضمون
-st.markdown("<h4 style='text-align: center; color: #D4AF37;'>🎵 Play Background Music 🎵</h4>", unsafe_allow_html=True)
-try:
-    audio_file = open('music.mp3', 'rb')
-    audio_bytes = audio_file.read()
-    st.audio(audio_bytes, format='audio/mp3')
-except Exception:
-    st.info("📌 Music file 'music.mp3' not found.")
 
 st.write("---")
 
