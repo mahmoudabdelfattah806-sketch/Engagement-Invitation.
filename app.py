@@ -7,7 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. التصميم الفاخر (الخلفية الداكنة، الستائر البيضاء الناصعة لمدة 6 ثوانٍ، وأنيميشن الخاتم)
+# 2. التنسيق الفاخر (ستائر بيضاء مائلة ومربوطة بشريط ذهبي)
 st.markdown("""
     <style>
     /* خلفية داكنة ملكية (Dark Luxury Theme) */
@@ -17,33 +17,47 @@ st.markdown("""
         font-family: 'Georgia', serif;
     }
 
-    /* أنيميشن الستائر البيضاء الناصعة تماماً - (6 ثوانٍ) */
-    @keyframes curtainOpenLeft {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-100%); visibility: hidden; }
+    /* أنيميشن فتح الستائر المربوطة والمائلة (6 ثوانٍ) */
+    @keyframes openCurtainLeft {
+        0% { transform: scaleX(1) rotate(0deg); transform-origin: top left; }
+        100% { transform: scaleX(0.1) rotate(-10deg); opacity: 0; visibility: hidden; }
     }
-    @keyframes curtainOpenRight {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(100%); visibility: hidden; }
+    @keyframes openCurtainRight {
+        0% { transform: scaleX(1) rotate(0deg); transform-origin: top right; }
+        100% { transform: scaleX(0.1) rotate(10deg); opacity: 0; visibility: hidden; }
     }
 
-    .curtain-left, .curtain-right {
+    .drape-left, .drape-right {
         position: fixed;
         top: 0;
         width: 50%;
         height: 100%;
-        background: #ffffff;
+        background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 85%, #eaeaea 100%);
         z-index: 9999;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
         pointer-events: none;
+        box-shadow: 10px 0 25px rgba(0,0,0,0.5);
     }
-    .curtain-left {
+
+    .drape-left {
         left: 0;
-        animation: curtainOpenLeft 6s ease-in-out 0.8s forwards;
+        border-bottom-right-radius: 40% 80%;
+        animation: openCurtainLeft 6s ease-in-out 0.8s forwards;
     }
-    .curtain-right {
+
+    .drape-right {
         right: 0;
-        animation: curtainOpenRight 6s ease-in-out 0.8s forwards;
+        border-bottom-left-radius: 40% 80%;
+        animation: openCurtainRight 6s ease-in-out 0.8s forwards;
+    }
+
+    /* الشريط الذهبي المربوط على الستارة */
+    .tie-gold-left, .tie-gold-right {
+        position: absolute;
+        top: 45%;
+        width: 100%;
+        height: 18px;
+        background: linear-gradient(45deg, #D4AF37, #FFD700, #AA7C11);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     /* العناوين المذهبة */
@@ -58,7 +72,7 @@ st.markdown("""
         font-family: 'Georgia', serif;
     }
 
-    /* أنيميشن كرتوني ضخم ومتحرك لإلباس الخواتم */
+    /* أنيميشن كرتوني لإلباس الخواتم */
     @keyframes groomMove {
         0%, 100% { transform: translateX(0) rotate(0deg); }
         50% { transform: translateX(15px) rotate(5deg); }
@@ -110,7 +124,6 @@ st.markdown("""
         animation: floatUp 2.2s infinite ease-in-out;
     }
 
-    /* زرار الإرسال */
     .stButton>button {
         background: linear-gradient(45deg, #D4AF37, #AA7C11);
         color: white;
@@ -122,9 +135,13 @@ st.markdown("""
     }
     </style>
 
-    <!-- الستائر البيضاء الناصعة -->
-    <div class="curtain-left"></div>
-    <div class="curtain-right"></div>
+    <!-- الستائر البيضاء المربوطة بشريط ذهبي -->
+    <div class="drape-left">
+        <div class="tie-gold-left"></div>
+    </div>
+    <div class="drape-right">
+        <div class="tie-gold-right"></div>
+    </div>
 """, unsafe_allow_html=True)
 
 # 3. احتفالية البلونات
