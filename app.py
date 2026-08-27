@@ -1,102 +1,129 @@
 import streamlit as st
+import base64
 
-# إعدادات الصفحة
+# 1. إعدادات الصفحة
 st.set_page_config(
     page_title="Mahmoud & Gharam Engagement",
     page_icon="💍",
     layout="centered"
 )
 
-# تصميم خلفية وألوان أنيقة
+# -------------------------------------------------------------
+# 🎵 تشغيل الأغنية تلقائياً من ملف music.mp3
+# -------------------------------------------------------------
+def play_background_music(file_path):
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+            b64 = base64.b64encode(data).decode()
+            return f"""
+                <audio autoplay loop style="display:none;">
+                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+                </audio>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {{
+                        var audio = document.querySelector("audio");
+                        if (audio) {{
+                            audio.play().catch(function(e) {{
+                                console.log("Autoplay waiting for click");
+                            }});
+                        }}
+                    }});
+                </script>
+            """
+    except Exception:
+        return ""
+
+music_html = play_background_music("music.mp3")
+if music_html:
+    st.components.v1.html(music_html, height=0)
+# -------------------------------------------------------------
+
+# 2. التنسيق والتصميم الفرحي الفاخر (Wedding Theme)
 st.markdown("""
     <style>
     .main {
-        background-color: #FAF8F5;
+        background: linear-gradient(135deg, #fffcf9 0%, #f7eae1 100%);
         text-align: center;
-    }
-    h1 {
-        color: #C5A059;
         font-family: 'Georgia', serif;
     }
+    h1 {
+        color: #D4AF37;
+        font-family: 'Georgia', serif;
+        font-size: 42px;
+        text-shadow: 1px 1px 2px #d4af3733;
+    }
     h2, h3 {
-        color: #333333;
+        color: #4A3B32;
         font-family: 'Georgia', serif;
     }
     .stButton>button {
-        background-color: #C5A059;
+        background: linear-gradient(45deg, #D4AF37, #AA7C11);
         color: white;
-        border-radius: 12px;
-        padding: 10px 25px;
+        border-radius: 25px;
+        padding: 12px 30px;
         border: none;
         font-size: 18px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     }
     </style>
 """, unsafe_allow_html=True)
 
-# تأكيد إحتفالي
+# 3. احتفالية البلونات
 st.balloons()
 
-# العنوان الرئيسي
-st.title("✨ YOU'RE INVITED! ✨")
-st.subheader("🗓️ Save The Date for Mahmoud & Gharam's Engagement")
+# 4. العنوان الفرحي والأسماء
+st.markdown("<h1 style='text-align: center;'>👑 YOU'RE INVITED 👑</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #AA7C11;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-size: 48px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
 
 st.write("---")
 
-# عرض الصورة
+# 5. عرض الصورة
 try:
-    st.image("photo.jpg", caption="Mahmoud ❤️ Gharam: Our Engagement", use_container_width=True)
+    st.image("photo.jpg", caption="Mahmoud ❤️ Gharam", use_container_width=True)
 except Exception:
     st.info("📌 Please place 'photo.jpg' in the same folder.")
 
 st.write("---")
 
-# التفاصيل والميعاد (الجمعة 28 أغسطس الساعة 6:00 مساءً)
+# 6. الموعد والمكان
 st.markdown("### 🗓️ Date & Time")
-st.markdown("**Friday, August 28, 2026 at 6:00 PM**")
+st.markdown("#### **Friday, August 28, 2026 at 6:00 PM**")
 
-st.markdown("### 📍 Location")
-st.markdown("**Bride's House**")
+st.markdown("### 📍 Venue")
+st.markdown("#### **Bride's House**")
 
-# رابط اللوكيشن الخاص بك
+# زرار اللوكيشن الذهبي
 maps_url = "https://maps.app.goo.gl/MzyyiPAiy9kePkDy8"
 st.markdown(f'''
-    <a href="{maps_url}" target="_blank">
-        <button style="background-color: #C5A059; color: white; padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;">
-            📍 Open Location on Google Maps
-        </button>
-    </a>
+    <div style="text-align: center; margin: 25px 0;">
+        <a href="{maps_url}" target="_blank">
+            <button style="background: linear-gradient(45deg, #D4AF37, #B8860B); color: white; padding: 14px 28px; border: none; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; box-shadow: 0px 4px 12px rgba(0,0,0,0.15);">
+                📍 Open Location on Google Maps
+            </button>
+        </a>
+    </div>
 ''', unsafe_allow_html=True)
 
 st.write("---")
 
-# عبارات الانتظار بالإنجليزية
-st.markdown("### ✨ We Look Forward to Seeing You! ✨")
-st.markdown("*Join us to celebrate our special day!*")
+# 7. الرسالة والمباركات
+st.markdown("### 💖 We Look Forward to Celebrating With You! 💖")
+st.markdown("*Your presence will make our day truly complete!*")
 
 st.write("---")
 
-# قسم التهاني والرسائل
-st.markdown("### 💖 Congratulations & Best Wishes 💖")
+st.markdown("### 💌 Send Your Wishes & Blessings 💌")
 
-col1, col2 = st.columns(2)
-with col1:
-    st.info("💕 So happy for you!")
-    st.success("💍 Wishing you a lifetime of joy!")
-with col2:
-    st.warning("🥂 May your future be bright!")
-    st.error("❤️ Sending all our love!")
-
-st.write("")
-
-# نموذج كتابة التهنئة للضيوف
 with st.form(key='wishes_form'):
     guest_name = st.text_input("Your Name:")
-    guest_message = st.text_area("Your Wishes & Message:")
-    submit = st.form_submit_button("Send Wishes ✨")
+    guest_message = st.text_area("Your Wishes:")
+    submit = st.form_submit_button("Send Love ✨")
 
 if submit:
     if guest_name and guest_message:
-        st.success(f"Thank you, {guest_name}! Your message has been received ❤️")
+        st.success(f"Thank you, {guest_name}! Your lovely message has been sent ❤️")
         st.snow()
     else:
         st.warning("Please enter your name and message!")
