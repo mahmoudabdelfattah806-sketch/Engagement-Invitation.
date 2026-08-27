@@ -1,5 +1,4 @@
 import streamlit as st
-import base64
 
 # 1. إعدادات الصفحة
 st.set_page_config(
@@ -8,16 +7,17 @@ st.set_page_config(
     layout="centered"
 )
 
-# 2. التنسيق والتصميم الفرحي الفاخر (الشموع، الستائر، وأنيميشن الدبل)
+# 2. التصميم الفاخر (الخلفية الداكنة، الستائر البطئية، أنيميشن الخاتم)
 st.markdown("""
     <style>
-    /* خلفية دافئة مع تأثير إضاءة الشموع المتلألئة */
+    /* خلفية داكنة ملكية (Dark Luxury Theme) */
     .stApp {
-        background: radial-gradient(circle at 50% 30%, #fffbf2 0%, #f4ebd9 60%, #e6d3b7 100%);
+        background: radial-gradient(circle at 50% 30%, #1a162b 0%, #0d0b18 60%, #05040a 100%);
+        color: #f0f0f0;
         font-family: 'Georgia', serif;
     }
 
-    /* أنيميشن الستائر البيضاء الحريرة فور فتح الصفحة */
+    /* أنيميشن الستائر البيضاء - بطيئة وانسيابية (4 ثوانٍ) */
     @keyframes curtainOpenLeft {
         0% { transform: translateX(0); }
         100% { transform: translateX(-100%); visibility: hidden; }
@@ -32,70 +32,85 @@ st.markdown("""
         top: 0;
         width: 50%;
         height: 100%;
-        background: linear-gradient(90deg, #ffffff 0%, #f7f7f7 80%, #e0e0e0 100%);
+        background: linear-gradient(90deg, #ffffff 0%, #eaeaea 80%, #dcdcdx 100%);
         z-index: 9999;
-        box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
         pointer-events: none;
     }
     .curtain-left {
         left: 0;
-        animation: curtainOpenLeft 2.2s ease-in-out 0.5s forwards;
+        animation: curtainOpenLeft 4s ease-in-out 0.8s forwards;
     }
     .curtain-right {
         right: 0;
-        animation: curtainOpenRight 2.2s ease-in-out 0.5s forwards;
+        animation: curtainOpenRight 4s ease-in-out 0.8s forwards;
     }
 
-    /* عناوين وديكورات مذهبة */
+    /* العناوين المذهبة */
     h1 {
-        color: #D4AF37;
+        color: #F3E5AB;
         font-family: 'Georgia', serif;
-        font-size: 42px;
-        text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.3);
+        font-size: 44px;
+        text-shadow: 0px 2px 10px rgba(243, 229, 171, 0.4);
     }
-    h2, h3 {
-        color: #4A3B32;
+    h2, h3, h4 {
+        color: #E6C687;
         font-family: 'Georgia', serif;
     }
 
-    /* أنيميشن كرتوني لإلباس الخواتم */
-    @keyframes ringPulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.15) rotate(5deg); }
-        100% { transform: scale(1); }
+    /* أنيميشن كرتوني ضخم ومتحرك لإلباس الخواتم */
+    @keyframes groomMove {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        50% { transform: translateX(15px) rotate(5deg); }
     }
-    @keyframes floatHearts {
-        0% { opacity: 0; transform: translateY(10px); }
-        50% { opacity: 1; transform: translateY(-10px); }
-        100% { opacity: 0; transform: translateY(-25px); }
+    @keyframes brideMove {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        50% { transform: translateX(-15px) rotate(-5deg); }
+    }
+    @keyframes ringSparkle {
+        0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px #fff); }
+        50% { transform: scale(1.4) rotate(15deg); filter: drop-shadow(0 0 12px #FFD700); }
+        100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px #fff); }
+    }
+    @keyframes floatUp {
+        0% { opacity: 0; transform: translateY(15px) scale(0.8); }
+        50% { opacity: 1; transform: translateY(-15px) scale(1.2); }
+        100% { opacity: 0; transform: translateY(-35px) scale(0.8); }
     }
 
-    .couple-animation-box {
-        background: rgba(255, 255, 255, 0.6);
+    .couple-card {
+        background: rgba(255, 255, 255, 0.05);
         border: 2px solid #D4AF37;
-        border-radius: 20px;
-        padding: 20px;
-        margin: 20px auto;
-        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
-        max-width: 400px;
+        border-radius: 25px;
+        padding: 30px 15px;
+        margin: 25px auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        max-width: 450px;
+        backdrop-filter: blur(5px);
     }
-    .chibi-avatar {
-        font-size: 55px;
+    .chibi-groom {
+        font-size: 75px;
         display: inline-block;
+        animation: groomMove 3s ease-in-out infinite;
     }
-    .ring-icon {
-        font-size: 35px;
+    .chibi-bride {
+        font-size: 75px;
         display: inline-block;
-        animation: ringPulse 2s infinite ease-in-out;
-        margin: 0 10px;
+        animation: brideMove 3s ease-in-out infinite;
     }
-    .floating-heart {
-        font-size: 20px;
-        color: #e74c3c;
-        animation: floatHearts 2.5s infinite ease-in-out;
+    .ring-animated {
+        font-size: 50px;
+        display: inline-block;
+        margin: 0 15px;
+        animation: ringSparkle 2s infinite ease-in-out;
+    }
+    .heart-effect {
+        font-size: 26px;
+        display: inline-block;
+        animation: floatUp 2.2s infinite ease-in-out;
     }
 
-    /* تنسيق الأزرار الذهبية */
+    /* زرار الإرسال */
     .stButton>button {
         background: linear-gradient(45deg, #D4AF37, #AA7C11);
         color: white;
@@ -103,11 +118,11 @@ st.markdown("""
         padding: 12px 30px;
         border: none;
         font-size: 18px;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
     }
     </style>
 
-    <!-- عناصر الستائر المتحركة -->
+    <!-- الستائر المتنقلة -->
     <div class="curtain-left"></div>
     <div class="curtain-right"></div>
 """, unsafe_allow_html=True)
@@ -117,32 +132,32 @@ st.balloons()
 
 # 4. العنوان الفرحي والأسماء
 st.markdown("<h1 style='text-align: center;'>👑 YOU'RE INVITED 👑</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='text-align: center; color: #AA7C11;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; font-size: 48px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center; color: #E6C687;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-size: 52px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
 
-# أنيميشن العريسين وتبديل الدبل (أنمي/كرتون)
+# 5. أنيميشن العريسين الضخم
 st.markdown("""
-    <div class="couple-animation-box" style="text-align: center;">
-        <div style="height: 20px;">
-            <span class="floating-heart">❤️</span>
-            <span class="floating-heart" style="animation-delay: 0.8s;">✨</span>
-            <span class="floating-heart" style="animation-delay: 1.5s;">💖</span>
+    <div class="couple-card" style="text-align: center;">
+        <div style="height: 30px; margin-bottom: 5px;">
+            <span class="heart-effect">💖</span>
+            <span class="heart-effect" style="animation-delay: 0.7s;">✨</span>
+            <span class="heart-effect" style="animation-delay: 1.4s;">❤️</span>
         </div>
         <div>
-            <span class="chibi-avatar">🤵🏻‍♂️</span>
-            <span class="ring-icon">💍</span>
-            <span class="chibi-avatar">👰🏻‍♀️</span>
+            <span class="chibi-groom">🤵🏻‍♂️</span>
+            <span class="ring-animated">💍</span>
+            <span class="chibi-bride">👰🏻‍♀️</span>
         </div>
-        <p style="color: #8B6508; font-weight: bold; margin-top: 8px; font-size: 15px;">
-            Putting a ring on it forever ✨
+        <p style="color: #F3E5AB; font-weight: bold; margin-top: 15px; font-size: 18px; letter-spacing: 1px;">
+            Forever Starts Today ✨
         </p>
     </div>
 """, unsafe_allow_html=True)
 
 st.write("---")
 
-# 🎵 مشغل الموسيقى المضمون
-st.markdown("<h4 style='text-align: center; color: #D4AF37;'>🎵 Play Background Music 🎵</h4>", unsafe_allow_html=True)
+# 🎵 مشغل الموسيقى
+st.markdown("<h4 style='text-align: center; color: #F3E5AB;'>🎵 Play Background Music 🎵</h4>", unsafe_allow_html=True)
 try:
     audio_file = open('music.mp3', 'rb')
     audio_bytes = audio_file.read()
@@ -152,7 +167,7 @@ except Exception:
 
 st.write("---")
 
-# 5. عرض الصورة
+# 6. عرض الصورة
 try:
     st.image("photo.jpg", caption="Mahmoud ❤️ Gharam", use_container_width=True)
 except Exception:
@@ -160,8 +175,8 @@ except Exception:
 
 st.write("---")
 
-# 6. الموعد والمكان
-st.markdown("### 🕯️ Date & Time")
+# 7. الموعد والمكان
+st.markdown("### 🗓️ Date & Time")
 st.markdown("#### **Friday, August 28, 2026 at 6:00 PM**")
 
 st.markdown("### 📍 Venue")
@@ -172,7 +187,7 @@ maps_url = "https://maps.app.goo.gl/MzyyiPAiy9kePkDy8"
 st.markdown(f'''
     <div style="text-align: center; margin: 25px 0;">
         <a href="{maps_url}" target="_blank">
-            <button style="background: linear-gradient(45deg, #D4AF37, #B8860B); color: white; padding: 14px 28px; border: none; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; box-shadow: 0px 4px 12px rgba(0,0,0,0.15);">
+            <button style="background: linear-gradient(45deg, #D4AF37, #B8860B); color: white; padding: 14px 28px; border: none; border-radius: 30px; cursor: pointer; font-size: 18px; font-weight: bold; box-shadow: 0px 4px 15px rgba(212,175,55,0.3);">
                 📍 Open Location on Google Maps
             </button>
         </a>
@@ -181,7 +196,7 @@ st.markdown(f'''
 
 st.write("---")
 
-# 7. الرسالة والمباركات
+# 8. المباركات
 st.markdown("### 💖 We Look Forward to Celebrating With You! 💖")
 st.markdown("*Your presence will make our day truly complete!*")
 
