@@ -8,70 +8,94 @@ st.set_page_config(
     layout="centered"
 )
 
-# -------------------------------------------------------------
-# 🎵 تشغيل الموسيقى عند أول لمسة أو حركة في الصفحة (Smart Autoplay)
-# -------------------------------------------------------------
-def get_audio_html(file_path):
-    try:
-        with open(file_path, "rb") as f:
-            data = f.read()
-            b64 = base64.b64encode(data).decode()
-            return f"""
-                <audio id="bg-music" loop style="display:none;">
-                    <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-                </audio>
-                <script>
-                    function playAudio() {{
-                        var audio = document.getElementById("bg-music");
-                        if (audio) {{
-                            audio.play().then(function() {{
-                                // تم التشغيل بنجاح، إزالة المستمعين
-                                removeListeners();
-                            }}).catch(function(e) {{
-                                console.log("Waiting for user interaction");
-                            }});
-                        }}
-                    }}
-
-                    function removeListeners() {{
-                        document.removeEventListener("click", playAudio);
-                        document.removeEventListener("touchstart", playAudio);
-                        document.removeEventListener("scroll", playAudio);
-                    }}
-
-                    // تشغيل الصوت فوراً أو عند أول حركة/لمسة للضيف
-                    document.addEventListener("DOMContentLoaded", playAudio);
-                    document.addEventListener("click", playAudio);
-                    document.addEventListener("touchstart", playAudio);
-                    document.addEventListener("scroll", playAudio);
-                </script>
-            """
-    except Exception:
-        return ""
-
-music_html = get_audio_html("music.mp3")
-if music_html:
-    st.components.v1.html(music_html, height=0)
-# -------------------------------------------------------------
-
-# 2. التنسيق والتصميم الفرحي الفاخر
+# 2. التنسيق والتصميم الفرحي الفاخر (الشموع، الستائر، وأنيميشن الدبل)
 st.markdown("""
     <style>
-    .main {
-        background: linear-gradient(135deg, #fffcf9 0%, #f7eae1 100%);
-        text-align: center;
+    /* خلفية دافئة مع تأثير إضاءة الشموع المتلألئة */
+    .stApp {
+        background: radial-gradient(circle at 50% 30%, #fffbf2 0%, #f4ebd9 60%, #e6d3b7 100%);
         font-family: 'Georgia', serif;
     }
+
+    /* أنيميشن الستائر البيضاء الحريرة فور فتح الصفحة */
+    @keyframes curtainOpenLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); visibility: hidden; }
+    }
+    @keyframes curtainOpenRight {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(100%); visibility: hidden; }
+    }
+
+    .curtain-left, .curtain-right {
+        position: fixed;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, #ffffff 0%, #f7f7f7 80%, #e0e0e0 100%);
+        z-index: 9999;
+        box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+        pointer-events: none;
+    }
+    .curtain-left {
+        left: 0;
+        animation: curtainOpenLeft 2.2s ease-in-out 0.5s forwards;
+    }
+    .curtain-right {
+        right: 0;
+        animation: curtainOpenRight 2.2s ease-in-out 0.5s forwards;
+    }
+
+    /* عناوين وديكورات مذهبة */
     h1 {
         color: #D4AF37;
         font-family: 'Georgia', serif;
         font-size: 42px;
-        text-shadow: 1px 1px 2px #d4af3733;
+        text-shadow: 1px 1px 3px rgba(212, 175, 55, 0.3);
     }
     h2, h3 {
         color: #4A3B32;
         font-family: 'Georgia', serif;
     }
+
+    /* أنيميشن كرتوني لإلباس الخواتم */
+    @keyframes ringPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.15) rotate(5deg); }
+        100% { transform: scale(1); }
+    }
+    @keyframes floatHearts {
+        0% { opacity: 0; transform: translateY(10px); }
+        50% { opacity: 1; transform: translateY(-10px); }
+        100% { opacity: 0; transform: translateY(-25px); }
+    }
+
+    .couple-animation-box {
+        background: rgba(255, 255, 255, 0.6);
+        border: 2px solid #D4AF37;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 20px auto;
+        box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+        max-width: 400px;
+    }
+    .chibi-avatar {
+        font-size: 55px;
+        display: inline-block;
+    }
+    .ring-icon {
+        font-size: 35px;
+        display: inline-block;
+        animation: ringPulse 2s infinite ease-in-out;
+        margin: 0 10px;
+    }
+    .floating-heart {
+        font-size: 20px;
+        color: #e74c3c;
+        animation: floatHearts 2.5s infinite ease-in-out;
+    }
+
+    /* تنسيق الأزرار الذهبية */
     .stButton>button {
         background: linear-gradient(45deg, #D4AF37, #AA7C11);
         color: white;
@@ -82,6 +106,10 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     }
     </style>
+
+    <!-- عناصر الستائر المتحركة -->
+    <div class="curtain-left"></div>
+    <div class="curtain-right"></div>
 """, unsafe_allow_html=True)
 
 # 3. احتفالية البلونات
@@ -91,6 +119,36 @@ st.balloons()
 st.markdown("<h1 style='text-align: center;'>👑 YOU'RE INVITED 👑</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: #AA7C11;'>Save The Date For The Engagement Of</h3>", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; font-size: 48px;'>✨ Mahmoud & Gharam ✨</h1>", unsafe_allow_html=True)
+
+# أنيميشن العريسين وتبديل الدبل (أنمي/كرتون)
+st.markdown("""
+    <div class="couple-animation-box" style="text-align: center;">
+        <div style="height: 20px;">
+            <span class="floating-heart">❤️</span>
+            <span class="floating-heart" style="animation-delay: 0.8s;">✨</span>
+            <span class="floating-heart" style="animation-delay: 1.5s;">💖</span>
+        </div>
+        <div>
+            <span class="chibi-avatar">🤵🏻‍♂️</span>
+            <span class="ring-icon">💍</span>
+            <span class="chibi-avatar">👰🏻‍♀️</span>
+        </div>
+        <p style="color: #8B6508; font-weight: bold; margin-top: 8px; font-size: 15px;">
+            Putting a ring on it forever ✨
+        </p>
+    </div>
+""", unsafe_allow_html=True)
+
+st.write("---")
+
+# 🎵 مشغل الموسيقى المضمون
+st.markdown("<h4 style='text-align: center; color: #D4AF37;'>🎵 Play Background Music 🎵</h4>", unsafe_allow_html=True)
+try:
+    audio_file = open('music.mp3', 'rb')
+    audio_bytes = audio_file.read()
+    st.audio(audio_bytes, format='audio/mp3')
+except Exception:
+    st.info("📌 Music file 'music.mp3' not found.")
 
 st.write("---")
 
@@ -103,7 +161,7 @@ except Exception:
 st.write("---")
 
 # 6. الموعد والمكان
-st.markdown("### 🗓️ Date & Time")
+st.markdown("### 🕯️ Date & Time")
 st.markdown("#### **Friday, August 28, 2026 at 6:00 PM**")
 
 st.markdown("### 📍 Venue")
